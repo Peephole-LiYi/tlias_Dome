@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -48,6 +49,13 @@ public class EmpServiceImpl implements EmpService {
         return new PageBean(page1.getTotal(), page1.getResult());
     }
 
+
+    /**
+     * @Description 批量删除
+     * @Author lhbll
+     * @Date 2023/10/25 20:05
+     * @Version 1.0
+    */
     @Override
     public void deletes(List<Integer> list) {
 
@@ -57,4 +65,56 @@ public class EmpServiceImpl implements EmpService {
 //        }
 
     }
+
+
+    /**
+     * @Description 添加员工
+     * @Author lhbll
+     * @Date 2023/10/25 20:05
+     * @Version 1.0
+    */
+    @Override
+    public void empAdd(Emp emp) {
+
+        emp.setCreateTime(LocalDateTime.now());
+        emp.setUpdateTime(LocalDateTime.now());
+
+        empMapper.empAddMapper(emp);
+    }
+
+    /**
+     * @Description 根据ID查找员工数据返回
+     * @Author lhbll
+     * @Date 2023/10/25 20:06
+     * @Version 1.0
+    */
+    @Override
+    public Emp selectById(Integer id) {
+        Emp getEmpByMapper = empMapper.selectByIdMapper(id);
+        return getEmpByMapper;
+    }
+
+
+    /**
+     * @Description 修改员工数据
+     * @Author lhbll
+     * @Date 2023/10/25 20:06
+     * @Version 1.0
+    */
+    @Override
+    public void chageEmp(Emp emp) {
+        emp.setUpdateTime(LocalDateTime.now());
+
+        empMapper.update(emp);
+    }
+
+    @Override
+    public Emp login(Emp emp) {
+
+
+
+        return empMapper.getByusernameAndPassword(emp);
+    }
+
+
 }

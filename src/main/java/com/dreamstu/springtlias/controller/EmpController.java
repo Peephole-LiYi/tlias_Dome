@@ -3,6 +3,7 @@ Name: EmpController
 CreatDate: 2023/10/23 22:59
 */
 
+import com.dreamstu.springtlias.pojo.Emp;
 import com.dreamstu.springtlias.pojo.PageBean;
 import com.dreamstu.springtlias.pojo.Result;
 import com.dreamstu.springtlias.service.EmpService;
@@ -41,5 +42,28 @@ public class EmpController {
         log.info("删除: {}", ids);
         return Result.success();
     }
+
+    @PostMapping
+    public Result add(@RequestBody Emp emp){
+
+        empService.empAdd(emp);
+        log.info("添加成功 {}", emp);
+
+        return Result.success();
+    }
+
+
+    @GetMapping("/{id}")
+    public Result selectById(@PathVariable Integer id){
+        Emp emp = empService.selectById(id);
+        return Result.success(emp);
+    }
+
+    @PutMapping
+    public Result chageEmp(@RequestBody Emp emp){
+        empService.chageEmp(emp);
+        return Result.success();
+    }
+
 
 }

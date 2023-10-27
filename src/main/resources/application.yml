@@ -1,0 +1,27 @@
+#SpringBoot基础配置,数据库相关信息
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tlias
+    username: root
+    password: 980906
+
+  #配置文件上传的单个文件最大限制,一个请求的最大限制
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 1000MB
+
+#配置mybatis的自动将数据库中_转为驼峰模式命名方式
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+#配置阿里云的相关信息
+aliyun:
+  oss:
+    endpoint: http://oss-cn-beijing.aliyuncs.com
+    accessKeySecret: 501VpeGau523PYARRqQea1vgHYWn6R
+    accessKeyId: IjDOeJGoF3AA9Suk
+    bucketName: oss-tuchuang-lhb
