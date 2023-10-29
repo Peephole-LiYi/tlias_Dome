@@ -4,10 +4,7 @@ CreatDate: 2023/10/23 22:58
 */
 
 import com.dreamstu.springtlias.pojo.Emp;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,6 +30,9 @@ public interface EmpMapper {
     @Select("select * from emp where username = #{username} and password = #{password}")
     Emp getByusernameAndPassword(Emp emp);
 
+
+    @Delete("delete from emp where dept_id = #{depId}")
+    void deleteEmpById(Integer depId);
 //    @Select("select count(*) from emp")
 //    public Long count();
 //

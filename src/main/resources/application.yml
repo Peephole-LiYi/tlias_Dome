@@ -25,3 +25,7 @@ aliyun:
     accessKeySecret: 501VpeGau523PYARRqQea1vgHYWn6R
     accessKeyId: IjDOeJGoF3AA9Suk
     bucketName: oss-tuchuang-lhb
+
+logging:
+  level:
+    org.springframework.jdbc.support.JdbcTransactionManager: debug

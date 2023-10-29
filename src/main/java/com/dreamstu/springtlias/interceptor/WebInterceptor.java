@@ -1,27 +1,25 @@
-package com.dreamstu.springtlias.filter;/*
-Name: LoginCheckFilter
-CreatDate: 2023/10/27 21:42
+package com.dreamstu.springtlias.interceptor;/*
+Name: WebInterceptor
+CreatDate: 2023/10/28 20:23
 */
 
 import com.alibaba.fastjson.JSONObject;
 import com.dreamstu.springtlias.pojo.Result;
 import com.dreamstu.springtlias.utils.JwtUtils;
-import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
-import java.io.IOException;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
-//@WebFilter("/*")
-public class LoginCheckFilter implements Filter {
+@Component
+public class WebInterceptor implements HandlerInterceptor {
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
 
         //获取URL
         String requestURI = request.getRequestURI();
@@ -30,8 +28,7 @@ public class LoginCheckFilter implements Filter {
         //1,如果为login行为,放行
         if (requestURI.contains("login")){
             log.info("请求为登录,放行");
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
+            return true;
         }
 
         //2,获取请求头的token
@@ -45,7 +42,7 @@ public class LoginCheckFilter implements Filter {
 
             String jsonString = JSONObject.toJSONString(notLogin);
             response.getWriter().write(jsonString);
-            return;
+            return false;
         }
 
         //4,检查JWT令牌是否合法
@@ -58,13 +55,22 @@ public class LoginCheckFilter implements Filter {
 
             String jsonString = JSONObject.toJSONString(notLogin);
             response.getWriter().write(jsonString);
-            return;
+            return false;
         }
 
 
         //5,放行
         log.info("放行");
-        filterChain.doFilter(servletRequest, servletResponse);
+        return true;
+    }
 
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        System.out.println("postHandle");
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        System.out.println("afterCompletion");
     }
 }

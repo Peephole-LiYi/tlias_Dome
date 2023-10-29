@@ -4,10 +4,14 @@ CreatDate: 2023/10/23 23:02
 */
 
 import com.dreamstu.springtlias.mapper.DeptMapper;
+import com.dreamstu.springtlias.mapper.EmpMapper;
+import com.dreamstu.springtlias.pojo.DepLog;
 import com.dreamstu.springtlias.pojo.Dept;
+import com.dreamstu.springtlias.service.DeptLogService;
 import com.dreamstu.springtlias.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +22,12 @@ public class DeptServiceImpl implements DeptService {
 
     @Autowired
     private DeptMapper deptMapper;
+
+    @Autowired
+    private EmpMapper empMapper;
+
+    @Autowired
+    private DeptLogServiceImpl deptLogService;
 
     /**
      *
@@ -42,9 +52,30 @@ public class DeptServiceImpl implements DeptService {
      * @return
      */
 
+    @Transactional
     @Override
-    public void delete(Integer id) {
-        deptMapper.deleteById(id);
+    public void delete(Integer id) throws Exception {
+
+        try {
+
+            deptMapper.deleteById(id);
+//            int i = 1 / 0;
+            empMapper.deleteEmpById(id);
+//        if (true) {
+//            throw new Exception();
+//        }
+
+
+
+
+        } finally {
+            DepLog depLog = new DepLog();
+            depLog.setLocalDateTime(LocalDateTime.now());
+            depLog.setDesp("删除部门,当前是部门ID为 :" + id);
+            deptLogService.insertLog(depLog);
+        }
+
+
     }
 
     /**
